@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>MediNest Pharmacy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Order medicines from MediNest Pharmacy on your phone. Upload a prescription, a pharmacist checks it, and your order reaches you in about 45 minutes.">
+<meta property="og:title" content="MediNest Pharmacy">
+<meta property="og:description" content="Medicines at your door in 45 minutes. Upload a prescription or shop health essentials.">
+<meta property="og:image" content="images/hero.jpg">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B7A55'/%3E%3Cpath d='M13 8h6v5h5v6h-5v5h-6v-5H8v-6h5z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: Apple style light page, phone first. Centered hero with search and three quick order actions above one large real photograph; alternating white and soft grey bands below. One committed light look. */
+:root{
+  color-scheme:light;
+  --bg:#FFFFFF; --soft:#F5F5F7; --ink:#1D1D1F; --muted:#6E6E73; --line:#E2E2E7; --tile:#EFEFF2;
+  --accent:#0B7A55; --accent-strong:#08603F; --accent-soft:#E7F4EE; --on-accent:#FFFFFF;
+  --warn:#9A4A0B; --warn-soft:#FDF0E3; --danger:#C0392B; --star:#E8A317;
+  --glass:rgba(255,255,255,.78); --scrim:rgba(20,20,24,.42);
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.08);
+  --shadow-lg:0 2px 4px rgba(0,0,0,.04),0 24px 48px rgba(0,0,0,.12);
+  --font:"Geist","Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --gl:max(16px,env(safe-area-inset-left,0px)); --gr:max(16px,env(safe-area-inset-right,0px));
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:24px;-webkit-font-smoothing:antialiased;overflow-x:clip;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,h4{margin:0;text-wrap:balance} p{margin:0;text-wrap:pretty} ul,ol{margin:0;padding:0;list-style:none}
+a{color:inherit} button{font:inherit;color:inherit} img,svg{max-width:100%} img{display:block} [hidden]{display:none!important}
+.skip{position:fixed;left:16px;top:-80px;z-index:100;background:var(--ink);color:#fff;padding:8px 12px;border-radius:8px;text-decoration:none;transition:transform .3s var(--ease)}
+.skip:focus{transform:translateY(96px)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* text styles */
+.heading-5{font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.015em}
+.heading-6{font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.01em}
+.title-2{font-size:18px;line-height:28px;font-weight:500}
+.title-3{font-size:16px;line-height:24px;font-weight:500}
+.title-4{font-size:14px;line-height:20px;font-weight:500}
+.body-3{font-size:16px;line-height:24px;font-weight:400}
+.body-5{font-size:14px;line-height:20px;font-weight:500}
+.body-6{font-size:14px;line-height:20px;font-weight:400}
+.button-md{font-size:16px;line-height:24px;font-weight:600}
+.button-sm{font-size:14px;line-height:20px;font-weight:600}
+.caption-1{font-size:14px;line-height:20px;font-weight:500}
+.caption-3{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.caption-4{font-size:12px;line-height:16px;font-weight:500}
+.caption-5{font-size:12px;line-height:16px;font-weight:400}
+.muted{color:var(--muted)} .mono{font-variant-numeric:tabular-nums} .eyebrow{color:var(--accent)}
+
+.wrap{width:100%;max-width:1080px;margin-inline:auto;padding-left:var(--gl);padding-right:var(--gr)}
+.ico{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ico-fill{fill:currentColor;stroke:none}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border-radius:9999px;border:1px solid transparent;text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .5s var(--ease),background-color .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}
+.btn:active{transform:scale(.98)}
+.btn-lg{min-height:52px;padding:12px 24px}
+.btn-primary{background:var(--accent);color:var(--on-accent)} .btn-primary:hover{background:var(--accent-strong)}
+.btn-dark{background:var(--ink);color:#fff} .btn-dark:hover{background:#000}
+.btn-ghost{background:var(--bg);color:var(--ink);border-color:var(--line)} .btn-ghost:hover{border-color:var(--muted)}
+.btn-soft{background:var(--accent-soft);color:var(--accent)} .btn-soft:hover{background:#D9EEE4}
+.link{display:inline-flex;align-items:center;gap:4px;color:var(--accent);text-decoration:none;min-height:44px;font-weight:500}
+.link .ico{width:16px;height:16px;transition:transform .5s var(--ease)} .link:hover .ico{transform:translateX(4px)}
+.icon-btn{width:44px;height:44px;display:grid;place-items:center;border-radius:9999px;border:0;background:transparent;cursor:pointer;position:relative;transition:background-color .3s var(--ease),transform .5s var(--ease)}
+.icon-btn:hover{background:var(--soft)} .icon-btn:active{transform:scale(.96)}
+
+/* nav */
+.nav{position:fixed;z-index:60;top:calc(env(safe-area-inset-top,0px) + 12px);left:50%;transform:translateX(-50%);width:min(calc(100% - 24px),640px);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 4px 4px 12px;background:var(--glass);-webkit-backdrop-filter:blur(20px) saturate(1.8);backdrop-filter:blur(20px) saturate(1.8);border:1px solid rgba(0,0,0,.06);border-radius:9999px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none}
+.brand-mark{width:28px;height:28px;border-radius:8px;background:var(--accent);display:grid;place-items:center}
+.brand-mark svg{width:16px;height:16px;fill:#fff}
+.brand b{font-weight:600;letter-spacing:-.01em}
+.nav-actions{display:flex;align-items:center;gap:4px}
+.badge{position:absolute;top:4px;right:2px;min-width:18px;height:18px;padding:0 4px;border-radius:9999px;background:var(--accent);color:#fff;font-size:12px;line-height:18px;font-weight:600;text-align:center;transform:scale(0);transition:transform .5s var(--ease)}
+.badge.on{transform:scale(1)} .badge.bump{animation:bump .5s var(--ease)}
+@keyframes bump{40%{transform:scale(1.35)}}
+.burger span{position:absolute;left:13px;width:18px;height:1.7px;border-radius:2px;background:currentColor;transition:transform .5s var(--ease)}
+.burger span:nth-child(1){transform:translateY(-4px)} .burger span:nth-child(2){transform:translateY(4px)}
+.menu-open .burger span:nth-child(1){transform:rotate(45deg)} .menu-open .burger span:nth-child(2){transform:rotate(-45deg)}
+.menu{position:fixed;inset:0;z-index:55;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);padding:calc(env(safe-area-inset-top,0px) + 96px) var(--gr) calc(env(safe-area-inset-bottom,0px) + 32px) var(--gl);display:flex;flex-direction:column;justify-content:space-between;visibility:hidden;opacity:0;transition:opacity .4s var(--ease),visibility 0s linear .4s}
+.menu-open .menu{visibility:visible;opacity:1;transition:opacity .4s var(--ease)}
+.menu ul{display:flex;flex-direction:column;max-width:640px;width:100%;margin-inline:auto}
+.menu li{opacity:0;transform:translateY(24px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.menu-open .menu li{opacity:1;transform:none;transition-delay:calc(var(--i) * 60ms)}
+.menu a{display:flex;align-items:center;justify-content:space-between;padding:16px 0;text-decoration:none;border-bottom:1px solid var(--line)}
+.menu a[aria-current="true"]{color:var(--accent)}
+.menu-foot{max-width:640px;width:100%;margin-inline:auto;display:flex;flex-direction:column;gap:12px}
+
+/* hero: full bleed photo slideshow card with slow zoom, story bars and a floating caption */
+.hero{padding-top:calc(env(safe-area-inset-top,0px) + 8px)}
+.hero-card{position:relative;border-radius:28px;overflow:hidden;height:min(88svh,760px);min-height:620px;background:#14211B;color:#fff;isolation:isolate;touch-action:pan-y}
+.slide{position:absolute;inset:0;margin:0;opacity:0;transition:opacity 1.2s var(--ease)}
+.slide.on{opacity:1;z-index:1}
+.slide img{width:100%;height:100%;object-fit:cover;transform:scale(1.14);transition:transform 7s cubic-bezier(0.25,0.6,0.3,1)}
+.slide.on img{transform:scale(1)}
+.slide:nth-child(1) img{object-position:30% 50%}
+.slide:nth-child(2) img{object-position:62% 50%}
+.slide:nth-child(3) img{object-position:50% 50%}
+.hero-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,0) 26%,rgba(0,0,0,.08) 42%,rgba(0,0,0,.8) 100%)}
+.hero-bars{position:absolute;z-index:3;top:76px;left:20px;right:20px;display:flex;gap:4px}
+.hero-bars button{flex:1;height:16px;padding:6px 0;border:0;background:none;cursor:pointer}
+.hero-bars i{display:block;height:3px;border-radius:9999px;background:rgba(255,255,255,.32);overflow:hidden}
+.hero-bars b{display:block;height:100%;background:#fff;transform:scaleX(0);transform-origin:left}
+.hero-bars .done b{transform:scaleX(1)}
+.hero-bars .on b{animation:fill 5.2s linear forwards}
+@keyframes fill{to{transform:scaleX(1)}}
+.slide-cap{position:absolute;z-index:3;top:104px;left:20px;display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:9999px;background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);border:1px solid rgba(255,255,255,.24);transition:opacity .4s var(--ease),transform .5s var(--ease)}
+.slide-cap.swap{opacity:0;transform:translateY(-8px)}
+.slide-cap .ci{width:32px;height:32px;border-radius:9999px;background:#fff;color:var(--accent);display:grid;place-items:center}
+.slide-cap .ci .ico{width:18px;height:18px}
+.hero-over{position:absolute;z-index:3;left:0;right:0;bottom:0;padding:24px 20px 20px;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.status{display:inline-flex;align-items:center;gap:8px;padding:4px 12px 4px 8px;border-radius:9999px;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff}
+.dot{width:8px;height:8px;border-radius:9999px;background:#3BD58F;box-shadow:0 0 0 4px rgba(59,213,143,.25)}
+.status.closed .dot{background:#F2A04B;box-shadow:0 0 0 4px rgba(242,160,75,.25)}
+.hero h1{max-width:680px;font-size:44px;line-height:44px;font-weight:600;letter-spacing:-.04em;background:linear-gradient(90deg,#FFFFFF,#DADADA);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:4px}
+.hero-sub{max-width:460px;color:rgba(255,255,255,.86);font-size:16px;line-height:24px}
+.anim .rise{animation:rise .9s var(--ease) both;animation-delay:calc(var(--d,0) * 90ms)}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+.searchbar{width:100%;max-width:560px;display:flex;align-items:center;gap:8px;padding:4px 4px 4px 16px;border-radius:9999px;background:#fff;color:var(--ink);box-shadow:0 12px 32px rgba(0,0,0,.25);transition:box-shadow .3s var(--ease)}
+.searchbar:focus-within{box-shadow:0 0 0 4px rgba(255,255,255,.35),0 12px 32px rgba(0,0,0,.25)}
+.searchbar .ico{color:var(--muted)}
+.searchbar input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:var(--ink);min-height:44px}
+.searchbar input::placeholder{color:var(--muted)}
+.quick{margin-top:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.q{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px 4px;border-radius:20px;background:var(--soft);text-decoration:none;text-align:center;transition:transform .5s var(--ease),background-color .3s var(--ease)}
+.q:hover{background:var(--tile)} .q:active{transform:scale(.97)}
+.q span.qi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--bg);color:var(--accent);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.q.primary{background:var(--accent);color:#fff} .q.primary:hover{background:var(--accent-strong)}
+.q.primary span.qi{background:rgba(255,255,255,.16);color:#fff;box-shadow:none}
+.strip{margin-top:16px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.strip-track{display:flex;gap:8px;width:max-content;animation:marq 40s linear infinite}
+.strip:hover .strip-track,.strip:focus-within .strip-track{animation-play-state:paused}
+@keyframes marq{to{transform:translateX(-50%)}}
+.strip button{display:flex;align-items:center;gap:8px;padding:4px 16px 4px 4px;border:0;border-radius:9999px;background:var(--soft);cursor:pointer;flex:none;transition:background-color .3s var(--ease)}
+.strip button:hover{background:var(--tile)}
+.strip img{width:40px;height:40px;border-radius:9999px;object-fit:cover}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:24px;text-align:center}
+.stat b{display:block;font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.02em}
+@media (min-width:640px){.hero h1{font-size:60px;line-height:60px}}
+@media (min-width:900px){
+  .hero-card{height:720px}
+  .hero-over{padding:48px}
+  .hero-bars{left:48px;right:48px;top:88px}.slide-cap{left:48px;top:116px}
+  .hero h1{font-size:72px;line-height:72px}
+  .quick{max-width:640px;margin-inline:auto}
+  .slide:nth-child(1) img{object-position:50% 40%}
+}
+
+/* sections */
+.section{padding-block:64px}
+.soft{background:var(--soft)}
+@media (min-width:900px){.section{padding-block:96px}}
+.sec-head{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.sec-head.center{align-items:center;text-align:center;margin-inline:auto;max-width:640px}
+.sec-title{font-size:32px;line-height:36px;font-weight:600;letter-spacing:-.03em}
+@media (min-width:900px){.sec-title{font-size:48px;line-height:48px}}
+.row-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+
+/* trust strip */
+.trust{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-left:calc(-1 * var(--gl));margin-right:calc(-1 * var(--gr));padding:4px var(--gr) 4px var(--gl)}
+.trust::-webkit-scrollbar{display:none}
+.trust li{flex:none;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:9999px;background:var(--soft)}
+.trust .ico{color:var(--accent);width:18px;height:18px}
+
+/* categories */
+.cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:720px){.cats{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}}
+.cat{position:relative;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:var(--bg);text-decoration:none;cursor:pointer;border:0;padding:0;text-align:left;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.cat:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.cat:active{transform:scale(.98)}
+.cat .ph{aspect-ratio:1;overflow:hidden;background:var(--tile)}
+.cat img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.cat:hover img{transform:scale(1.06)}
+.cat .cl{display:flex;align-items:center;justify-content:space-between;gap:4px;padding:12px}
+.cat .cl .ico{width:16px;height:16px;color:var(--muted)}
+.cat.rx{background:var(--accent);color:#fff;justify-content:space-between;padding:16px;min-height:100%}
+.cat.rx .rxi{width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.16);display:grid;place-items:center}
+.cat.rx .rxi .ico{width:24px;height:24px}
+
+/* offer */
+.offer{display:flex;flex-direction:column;gap:16px;padding:24px;border-radius:24px;background:var(--accent-soft)}
+.offer h3{font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.02em}
+@media (min-width:720px){.offer{flex-direction:row;align-items:center;justify-content:space-between;padding:32px 40px}}
+
+/* shop */
+.chips{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;margin-left:calc(-1 * var(--gl));margin-right:calc(-1 * var(--gr));padding:4px var(--gr) 8px var(--gl);scrollbar-width:none;margin-bottom:16px}
+.chips::-webkit-scrollbar{display:none}
+.chip{scroll-snap-align:start;flex:none;display:inline-flex;align-items:center;min-height:40px;padding:8px 16px;border-radius:9999px;border:1px solid var(--line);background:var(--bg);cursor:pointer;transition:background-color .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease),transform .5s var(--ease)}
+.chip:active{transform:scale(.97)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:720px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+@media (min-width:1000px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.product{background:var(--bg);border-radius:20px;display:flex;flex-direction:column;min-width:0;overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.product:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.pack{position:relative;aspect-ratio:1;background:var(--tile);overflow:hidden}
+.pack img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.product:hover .pack img{transform:scale(1.05)}
+.tag{position:absolute;top:8px;left:8px;padding:4px 8px;border-radius:9999px;background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.tag.rx{color:var(--warn)}
+.tag.off{left:auto;right:8px;color:var(--accent)}
+.p-body{display:flex;flex-direction:column;gap:4px;padding:12px;flex:1;min-width:0}
+.p-name{overflow-wrap:anywhere}
+.p-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:8px;flex-wrap:wrap}
+.price{font-weight:600;font-variant-numeric:tabular-nums}
+.mrp{font-size:12px;line-height:16px;color:var(--muted);text-decoration:line-through}
+.add{min-height:40px;padding:8px 12px}
+.stepper{display:inline-flex;align-items:center;border-radius:9999px;background:var(--accent);color:#fff}
+.stepper button{width:36px;height:40px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;border-radius:9999px;color:#fff}
+.stepper button:active{transform:scale(.9)}
+.stepper .ico{width:16px;height:16px}
+.stepper output{min-width:16px;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
+.empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:32px 24px;border-radius:20px;background:var(--bg)}
+
+/* feature (Apple style photo stories) */
+.feature{display:grid;gap:24px;align-items:center}
+.feature .ftxt{display:flex;flex-direction:column;gap:16px;text-align:center;align-items:center}
+.feature .ftxt p{max-width:520px}
+.fphoto{margin:0;border-radius:24px;overflow:hidden;aspect-ratio:4/3;max-width:100%;background:var(--tile)}
+.fphoto img{width:100%;height:100%;object-fit:cover;transform:scale(var(--z,1));will-change:transform}
+.ticks{display:flex;flex-direction:column;gap:8px;text-align:left}
+.ticks li{display:flex;gap:8px;align-items:flex-start}
+.ticks .ico{color:var(--accent);margin-top:2px;width:18px;height:18px}
+@media (min-width:900px){.feature{grid-template-columns:1fr 1fr;gap:64px}.feature .ftxt{text-align:left;align-items:flex-start}.feature.flip .fphoto{order:2}}
+
+/* steps */
+.steps{display:grid;gap:12px}
+@media (min-width:900px){.steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+.step{display:flex;flex-direction:column;gap:8px;padding:24px;border-radius:20px;background:var(--bg)}
+.step-n{width:32px;height:32px;border-radius:9999px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:14px;margin-bottom:8px}
+
+/* upload */
+.upload-card{display:grid;gap:16px;background:var(--bg);border-radius:24px;padding:16px}
+@media (min-width:860px){.upload-card{grid-template-columns:1fr 1fr;padding:24px;gap:24px}}
+.drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;min-height:220px;padding:24px;border-radius:16px;border:1.5px dashed #C9C9D1;background:var(--soft);cursor:pointer;transition:border-color .3s var(--ease),background-color .3s var(--ease)}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop-ico{width:56px;height:56px;border-radius:16px;background:var(--bg);display:grid;place-items:center;color:var(--accent);box-shadow:var(--shadow)}
+.drop-ico .ico{width:28px;height:28px}
+.preview{display:flex;align-items:center;gap:12px;padding:8px;border-radius:16px;border:1px solid var(--line);background:var(--bg);width:100%}
+.preview img,.preview .file-ico{width:64px;height:64px;border-radius:8px;object-fit:cover;flex:none;background:var(--soft);display:grid;place-items:center;color:var(--muted)}
+.preview div{min-width:0} .preview p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.form{display:flex;flex-direction:column;gap:16px}
+.field{display:flex;flex-direction:column;gap:8px}
+.input{width:100%;min-height:48px;padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:16px;transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.input::placeholder{color:#A1A1A8}
+.input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.input[aria-invalid="true"]{border-color:var(--danger)}
+.err{color:var(--danger)} .err:empty{display:none}
+.ready{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:16px;background:var(--accent-soft)}
+.radios{display:flex;gap:8px;flex-wrap:wrap}
+.radio{position:relative}
+.radio input{position:absolute;opacity:0;inset:0}
+.radio span{display:inline-flex;min-height:40px;align-items:center;padding:8px 16px;border-radius:9999px;border:1px solid var(--line);background:var(--bg);cursor:pointer;transition:all .3s var(--ease)}
+.radio input:checked+span{background:var(--ink);color:#fff;border-color:var(--ink)}
+.radio input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+
+/* tagline */
+.tagline{padding-block:96px}
+.tagline p{max-width:760px;margin-inline:auto;text-align:center;font-size:32px;line-height:36px;font-weight:600;letter-spacing:-.03em;text-wrap:balance}
+@media (min-width:900px){.tagline p{font-size:48px;line-height:48px}}
+.tagline .w{transition:color .7s var(--ease)}
+.words-armed .w{color:#D2D2D7}
+.words-armed .w.on{color:var(--ink)}
+.words-armed .w.on.hl{color:var(--accent)}
+
+/* reviews */
+.reviews{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-left:calc(-1 * var(--gl));margin-right:calc(-1 * var(--gr));padding:4px var(--gr) 8px var(--gl);scrollbar-width:none}
+.reviews::-webkit-scrollbar{display:none}
+.review{scroll-snap-align:start;flex:0 0 86%;max-width:380px;display:flex;flex-direction:column;gap:16px;padding:24px;border-radius:20px;background:var(--bg)}
+.review footer{display:flex;align-items:center;gap:12px;margin-top:auto}
+.avatar{width:40px;height:40px;border-radius:9999px;display:grid;place-items:center;color:#fff;font-weight:600;font-size:14px;flex:none}
+.stars{display:inline-flex;gap:2px;color:var(--star)} .stars svg{width:16px;height:16px}
+@media (min-width:900px){.review{flex-basis:calc((100% - 24px)/3)}}
+
+/* store */
+.store{display:grid;gap:16px}
+@media (min-width:860px){.store{grid-template-columns:1.1fr 1fr;gap:24px}}
+.store-photo{margin:0;border-radius:24px;overflow:hidden;aspect-ratio:4/3;max-width:100%;background:var(--tile);position:relative}
+.store-photo img{width:100%;height:100%;object-fit:cover}
+.info{display:flex;flex-direction:column;gap:16px;padding:24px;border-radius:24px;background:var(--soft)}
+.info-row{display:flex;gap:12px;align-items:flex-start}
+.info-row>.ico{margin-top:2px;color:var(--accent)}
+.info-row div{min-width:0;display:flex;flex-direction:column;gap:4px}
+.phone-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.copy{min-height:32px;padding:4px 12px}
+.info-ctas{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+
+/* faq */
+.faq{display:flex;flex-direction:column;border-top:1px solid var(--line);max-width:760px;margin-inline:auto}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;cursor:pointer;min-height:56px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .ico{transition:transform .5s var(--ease);color:var(--muted)}
+.faq details[open] summary .ico{transform:rotate(45deg)}
+.faq details p{padding:0 32px 16px 0;color:var(--muted)}
+
+/* final */
+.final{position:relative;border-radius:24px;overflow:hidden;min-height:440px;display:flex;align-items:flex-end;color:#fff;background:#111}
+.final img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.final::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.final-in{position:relative;z-index:1;padding:32px 24px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+.final h2{font-size:32px;line-height:36px;font-weight:600;letter-spacing:-.03em;max-width:560px}
+.final p{opacity:.9;max-width:480px}
+.final .btn{background:#fff;color:var(--ink)} .final .btn:hover{transform:translateY(-2px)}
+@media (min-width:900px){.final{min-height:520px}.final-in{padding:64px}.final h2{font-size:48px;line-height:48px}}
+
+footer.site{padding-block:48px calc(env(safe-area-inset-bottom,0px) + 120px);background:var(--soft)}
+.foot{display:flex;flex-direction:column;gap:16px}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links button{background:none;border:0;padding:4px 0;cursor:pointer;color:var(--muted);text-decoration:underline;text-underline-offset:4px}
+.credit{color:#A1A1A8}
+
+/* dock */
+.dock{position:fixed;z-index:50;left:0;right:0;bottom:0;padding:8px var(--gr) calc(env(safe-area-inset-bottom,0px) + 12px) var(--gl);transform:translateY(130%);transition:transform .5s var(--ease);pointer-events:none}
+.dock.show{transform:none}
+.dock-in{pointer-events:auto;max-width:640px;margin-inline:auto;display:flex;gap:8px;padding:6px;border-radius:9999px;background:var(--glass);-webkit-backdrop-filter:blur(20px) saturate(1.8);backdrop-filter:blur(20px) saturate(1.8);border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow-lg)}
+.dock-in .btn-primary{flex:1;min-width:0;justify-content:space-between;padding-inline:16px}
+.dock-sum{display:flex;align-items:center;gap:8px;min-width:0}
+.dock-sum span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.dock-in .wa{background:var(--accent-soft);color:var(--accent);width:44px;height:44px;flex:none}
+
+/* sheets */
+dialog.sheet{margin:auto 0 0;width:100%;max-width:100%;max-height:90svh;border:0;padding:0;border-radius:24px 24px 0 0;background:var(--bg);color:var(--ink);box-shadow:var(--shadow-lg)}
+dialog.sheet::backdrop{background:var(--scrim)}
+dialog.sheet[open]{animation:up .5s var(--ease)}
+@keyframes up{from{transform:translateY(48px);opacity:0}}
+@media (min-width:720px){dialog.sheet{margin:auto;max-width:520px;border-radius:24px}}
+.sheet-in{display:flex;flex-direction:column;max-height:90svh}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 12px 12px 24px;border-bottom:1px solid var(--line)}
+.sheet-body{overflow-y:auto;padding:16px 24px;display:flex;flex-direction:column;gap:16px;overscroll-behavior:contain}
+.sheet-foot{padding:16px 24px calc(env(safe-area-inset-bottom,0px) + 16px);border-top:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.sheet-foot:empty{display:none}
+.line-item{display:flex;align-items:center;gap:12px}
+.line-item .thumb{width:56px;height:56px;border-radius:12px;overflow:hidden;background:var(--tile);flex:none}
+.line-item .thumb img{width:100%;height:100%;object-fit:cover}
+.line-item div.t{flex:1;min-width:0}
+.sum-row{display:flex;justify-content:space-between;gap:8px}
+.sum-row.total{padding-top:8px;margin-top:8px;border-top:1px dashed var(--line)}
+.note{display:flex;gap:8px;padding:12px;border-radius:12px;background:var(--warn-soft);color:var(--warn)}
+.legal-body p+p{margin-top:12px}
+
+.toast{position:fixed;z-index:80;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translate(-50%,24px);opacity:0;padding:8px 16px;border-radius:9999px;background:var(--ink);color:#fff;transition:opacity .3s var(--ease),transform .5s var(--ease);pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.reveal{transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.pre{opacity:0;transform:translateY(32px)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;scroll-behavior:auto!important}
+  .reveal.pre{transform:none}
+  .menu li{transform:none}
+  .hero-photo img,.fphoto img{transform:none!important}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r=".8"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.8z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 19.5l1.2-3.6A8 8 0 1 1 8.6 18.7z"/><path d="M9 12h.01M12 12h.01M15 12h.01"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 0 0 6.5 6.5L16 14l4 1.5V19a1.5 1.5 0 0 1-1.5 1.5A15.5 15.5 0 0 1 3.5 5.5 1.5 1.5 0 0 1 5 4z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="MediNest Pharmacy home">
+    <span class="brand-mark"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg></span>
+    <b class="title-3">MediNest</b>
+  </a>
+  <div class="nav-actions">
+    <button class="icon-btn" id="cartBtn" type="button" aria-label="Open cart, 0 items"><svg class="ico"><use href="#i-bag"/></svg><span class="badge" id="badge">0</span></button>
+    <button class="icon-btn burger" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+  </div>
+</header>
+
+<nav class="menu" id="menu" aria-label="Main">
+  <ul>
+    <li style="--i:0"><a class="heading-5" href="#categories" data-nav>Categories<svg class="ico"><use href="#i-chev"/></svg></a></li>
+    <li style="--i:1"><a class="heading-5" href="#shop" data-nav>Bestsellers<svg class="ico"><use href="#i-chev"/></svg></a></li>
+    <li style="--i:2"><a class="heading-5" href="#upload" data-nav>Upload prescription<svg class="ico"><use href="#i-chev"/></svg></a></li>
+    <li style="--i:3"><a class="heading-5" href="#how" data-nav>How it works<svg class="ico"><use href="#i-chev"/></svg></a></li>
+    <li style="--i:4"><a class="heading-5" href="#store" data-nav>Store and hours<svg class="ico"><use href="#i-chev"/></svg></a></li>
+    <li style="--i:5"><a class="heading-5" href="#faq" data-nav>Questions<svg class="ico"><use href="#i-chev"/></svg></a></li>
+  </ul>
+  <div class="menu-foot">
+    <p class="body-6 muted">Pharmacist available 9:00 am to 10:30 pm, every day.</p>
+    <a class="btn btn-primary btn-lg button-md wa-link" href="#" target="_blank" rel="noopener"><svg class="ico"><use href="#i-chat"/></svg>Chat with the pharmacist</a>
+  </div>
+</nav>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-card" id="heroCard">
+        <figure class="slide on"><img src="images/hero.jpg" alt="Pharmacist taking a medicine box from a stocked pharmacy shelf" width="1400" height="933" fetchpriority="high"></figure>
+        <figure class="slide"><img src="images/pharmacist.jpg" alt="Pharmacist explaining a medicine to an older customer" width="1200" height="800"></figure>
+        <figure class="slide"><img src="images/delivery.jpg" alt="Delivery person handing a sealed parcel to a customer" width="1000" height="667"></figure>
+        <div class="hero-scrim"></div>
+        <div class="hero-bars" aria-label="Hero photos"><button type="button" class="on" aria-label="Photo 1"><i><b></b></i></button><button type="button" aria-label="Photo 2"><i><b></b></i></button><button type="button" aria-label="Photo 3"><i><b></b></i></button></div>
+        <div class="slide-cap" id="slideCap" aria-live="polite"><span class="ci"><svg class="ico"><use href="#i-shield"/></svg></span><span class="title-4" id="capText">Licensed pharmacist on duty</span></div>
+        <div class="hero-over">
+          <span class="status caption-1 rise" id="status" style="--d:0"><span class="dot"></span><span id="statusText">Open now · delivering till 10:30 pm</span></span>
+          <h1 class="rise" style="--d:1">Medicines<br> at your door.<br> In 45 minutes.</h1>
+          <p class="hero-sub rise" style="--d:2">Your neighbourhood pharmacy, now on your phone. Every prescription checked by a licensed pharmacist.</p>
+          <form class="searchbar rise" id="heroSearch" role="search" style="--d:3">
+            <svg class="ico"><use href="#i-search"/></svg>
+            <input id="hq" type="search" placeholder="Search medicines" aria-label="Search medicines" autocomplete="off" enterkeyhint="search">
+            <button class="btn btn-dark button-sm" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+      <div class="quick">
+        <a class="q primary" href="#upload"><span class="qi"><svg class="ico"><use href="#i-camera"/></svg></span><span class="caption-1">Upload prescription</span></a>
+        <a class="q wa-link" href="#" target="_blank" rel="noopener"><span class="qi"><svg class="ico"><use href="#i-chat"/></svg></span><span class="caption-1">Order on WhatsApp</span></a>
+        <a class="q" href="tel:+919876543210"><span class="qi"><svg class="ico"><use href="#i-phone"/></svg></span><span class="caption-1">Call the store</span></a>
+      </div>
+    </div>
+    <div class="strip" aria-label="Popular categories"><div class="strip-track" id="strip"></div></div>
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat"><b class="mono">4.8★</b><span class="caption-5 muted">Rating</span></div>
+        <div class="stat"><b class="mono">1,263</b><span class="caption-5 muted">Happy customers</span></div>
+        <div class="stat"><b class="mono">45 min</b><span class="caption-5 muted">Average delivery</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-block:32px 0" aria-label="Why order from us">
+    <div class="wrap">
+      <ul class="trust">
+        <li class="caption-1"><svg class="ico"><use href="#i-shield"/></svg>Genuine medicines</li>
+        <li class="caption-1"><svg class="ico"><use href="#i-wallet"/></svg>Cash or UPI on delivery</li>
+        <li class="caption-1"><svg class="ico"><use href="#i-truck"/></svg>Free delivery above ₹499</li>
+        <li class="caption-1"><svg class="ico"><use href="#i-bell"/></svg>Refill reminders</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="categories" aria-labelledby="catTitle">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="caption-3 eyebrow">Shop by category</span>
+        <h2 class="sec-title" id="catTitle">Everything your family needs.</h2>
+      </div>
+      <div class="cats" id="cats"></div>
+    </div>
+  </section>
+
+  <section class="section soft" id="shop" aria-labelledby="shopTitle">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="caption-3 eyebrow">Bestsellers</span>
+        <h2 class="sec-title" id="shopTitle">Ordered most this week.</h2>
+      </div>
+      <div class="chips" id="chips" role="toolbar" aria-label="Filter by category"></div>
+      <div class="grid" id="grid" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="f1Title">
+    <div class="wrap feature">
+      <figure class="fphoto reveal" data-zoom><img src="images/pharmacist.jpg" alt="Pharmacist explaining a medicine bottle to an older customer" loading="lazy" width="1200" height="800"></figure>
+      <div class="ftxt reveal">
+        <span class="caption-3 eyebrow">Pharmacist checked</span>
+        <h2 class="sec-title" id="f1Title">A real pharmacist reads every prescription.</h2>
+        <p class="body-3 muted">Before anything is packed, our pharmacist matches each medicine, dose and quantity with your doctor's slip. If a brand is out of stock, we call you and offer the same salt.</p>
+        <ul class="ticks body-6">
+          <li><svg class="ico"><use href="#i-check"/></svg>Expiry checked on every strip</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Stored below 25°C, fridge items kept cold</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Free advice on how and when to take it</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft" aria-labelledby="f2Title">
+    <div class="wrap feature flip">
+      <figure class="fphoto reveal" data-zoom><img src="images/delivery.jpg" alt="Delivery person handing a sealed parcel to a customer" loading="lazy" width="1000" height="667"></figure>
+      <div class="ftxt reveal">
+        <span class="caption-3 eyebrow">Fast delivery</span>
+        <h2 class="sec-title" id="f2Title">Sealed, packed and at your door in about 45 minutes.</h2>
+        <p class="body-3 muted">We deliver within 6 km of the store, from 9:00 am to 10:30 pm. Pay by cash, UPI or card only after the parcel is in your hands.</p>
+        <a class="link body-3" href="#shop">Start shopping<svg class="ico"><use href="#i-chev"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="howTitle">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <span class="caption-3 eyebrow">How it works</span>
+        <h2 class="sec-title" id="howTitle">Three steps. No app needed.</h2>
+      </div>
+      <ol class="steps">
+        <li class="step reveal" style="background:var(--soft)"><span class="step-n">1</span><h3 class="heading-6">Snap your prescription</h3><p class="body-6 muted">Take a photo of the doctor's slip, or add products to your cart.</p></li>
+        <li class="step reveal" style="background:var(--soft)"><span class="step-n">2</span><h3 class="heading-6">We confirm on WhatsApp</h3><p class="body-6 muted">The pharmacist checks it and sends you the total in a few minutes.</p></li>
+        <li class="step reveal" style="background:var(--soft)"><span class="step-n">3</span><h3 class="heading-6">Delivered to your door</h3><p class="body-6 muted">A sealed parcel reaches you in about 45 minutes. Pay on delivery.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section soft" id="upload" aria-labelledby="upTitle">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="caption-3 eyebrow">Prescription order</span>
+        <h2 class="sec-title" id="upTitle">Have a prescription? Send us a photo.</h2>
+        <p class="body-3 muted">We pack every medicine on it and confirm the total with you before anything is sent.</p>
+      </div>
+      <div class="upload-card reveal">
+        <div>
+          <label class="drop" id="drop" for="rxFile">
+            <input id="rxFile" type="file" accept="image/*,application/pdf">
+            <span class="drop-ico"><svg class="ico"><use href="#i-camera"/></svg></span>
+            <span class="title-3">Tap to take a photo or choose a file</span>
+            <span class="caption-5 muted">JPG, PNG or PDF, up to 10 MB</span>
+          </label>
+          <p class="err caption-4" id="fileErr" role="alert"></p>
+          <div id="previewWrap" hidden style="margin-top:12px"></div>
+        </div>
+        <form class="form" id="rxForm" novalidate>
+          <div class="field">
+            <label class="title-4" for="rxName">Your name</label>
+            <input class="input" id="rxName" autocomplete="name" placeholder="Farhana Qadri">
+            <p class="err caption-4" id="rxNameErr"></p>
+          </div>
+          <div class="field">
+            <label class="title-4" for="rxPhone">Mobile number</label>
+            <input class="input mono" id="rxPhone" inputmode="numeric" autocomplete="tel-national" placeholder="98765 43210" maxlength="11">
+            <p class="err caption-4" id="rxPhoneErr"></p>
+          </div>
+          <button class="btn btn-primary btn-lg button-md" type="submit"><svg class="ico"><use href="#i-check"/></svg>Prepare my order</button>
+          <div class="ready" id="rxReady" hidden>
+            <p class="body-5">Your message for the pharmacist is ready. WhatsApp opens with it filled in. Attach the prescription photo in the chat and press send.</p>
+            <a class="btn btn-primary button-md" id="rxWa" href="#" target="_blank" rel="noopener"><svg class="ico"><use href="#i-chat"/></svg>Send on WhatsApp</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="tagline" aria-label="Our promise">
+    <div class="wrap"><p id="tagline">Every strip checked by a pharmacist. Every order sealed before it leaves our counter.</p></div>
+  </section>
+
+  <section class="section soft" aria-labelledby="revTitle">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="caption-3 eyebrow">Reviews</span>
+        <h2 class="sec-title" id="revTitle">Loved by families nearby.</h2>
+      </div>
+      <div class="reviews" tabindex="0" aria-label="Customer reviews, scroll sideways">
+        <article class="review"><span class="stars"><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg></span><p class="body-3">My father's BP tablets ran out at 9 at night. I sent the slip on WhatsApp and the strip was at the door before 10.</p><footer><span class="avatar" style="background:#0B7A55">FQ</span><div><p class="title-4">Farhana Qadri</p><p class="caption-5 muted">Ordered 14 times</p></div></footer></article>
+        <article class="review"><span class="stars"><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg></span><p class="body-3">The pharmacist called to say one brand was out and offered the same salt for less. That call is why I keep ordering here.</p><footer><span class="avatar" style="background:#B4541A">RB</span><div><p class="title-4">Rohit Bhagat</p><p class="caption-5 muted">Ordered 9 times</p></div></footer></article>
+        <article class="review"><span class="stars"><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg><svg class="ico-fill"><use href="#i-star"/></svg></span><p class="body-3">Diapers, ORS and the baby's syrup in one order, paid by UPI at the door. Much easier than going out with a newborn.</p><footer><span class="avatar" style="background:#3D5A80">AK</span><div><p class="title-4">Anjali Kaul</p><p class="caption-5 muted">Ordered 6 times</p></div></footer></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="store" aria-labelledby="storeTitle">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="caption-3 eyebrow">Visit or call</span>
+        <h2 class="sec-title" id="storeTitle">Store and hours.</h2>
+      </div>
+      <div class="store">
+        <figure class="store-photo reveal"><img src="images/store.jpg" alt="Pharmacist standing in a well stocked pharmacy aisle" loading="lazy" width="1000" height="667"></figure>
+        <div class="info reveal">
+          <div class="info-row"><svg class="ico"><use href="#i-pin"/></svg><div><p class="title-3">MediNest Pharmacy</p><p class="body-6 muted">Shop 7, Main Market Road, near City Hospital</p></div></div>
+          <div class="info-row"><svg class="ico"><use href="#i-clock"/></svg><div><p class="title-3">9:00 am to 10:30 pm</p><p class="body-6 muted">Open all 7 days, including Sundays</p></div></div>
+          <div class="info-row"><svg class="ico"><use href="#i-truck"/></svg><div><p class="title-3">Delivery within 6 km</p><p class="body-6 muted">Free above ₹499, otherwise ₹29</p></div></div>
+          <div class="info-row"><svg class="ico"><use href="#i-phone"/></svg><div><div class="phone-line"><span class="title-3 mono" id="phoneText">+91 98765 43210</span><button class="btn btn-ghost copy caption-4" id="copyPhone" type="button"><svg class="ico" style="width:16px;height:16px"><use href="#i-copy"/></svg>Copy</button></div><p class="body-6 muted">Call or WhatsApp the pharmacist</p></div></div>
+          <div class="info-ctas">
+            <a class="btn btn-primary button-md wa-link" href="#" target="_blank" rel="noopener"><svg class="ico"><use href="#i-chat"/></svg>Chat on WhatsApp</a>
+            <a class="btn btn-ghost button-md" href="https://www.google.com/maps/search/?api=1&query=pharmacy%20near%20me" target="_blank" rel="noopener"><svg class="ico"><use href="#i-pin"/></svg>Get directions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section soft" id="faq" aria-labelledby="faqTitle">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <span class="caption-3 eyebrow">Questions</span>
+        <h2 class="sec-title" id="faqTitle">Before you order.</h2>
+      </div>
+      <div class="faq reveal">
+        <details><summary class="title-3">Do I need to download an app?<svg class="ico"><use href="#i-plus"/></svg></summary><p class="body-6">No. This website works on any phone. Save it to your home screen and it opens like an app.</p></details>
+        <details><summary class="title-3">Which medicines need a prescription?<svg class="ico"><use href="#i-plus"/></svg></summary><p class="body-6">Medicines marked Rx need a valid prescription from a registered doctor. Send a clear photo and the pharmacist confirms before packing.</p></details>
+        <details><summary class="title-3">How long does delivery take?<svg class="ico"><use href="#i-plus"/></svg></summary><p class="body-6">About 45 minutes within 6 km during store hours. Orders after 10:00 pm go out first thing the next morning.</p></details>
+        <details><summary class="title-3">How do I pay?<svg class="ico"><use href="#i-plus"/></svg></summary><p class="body-6">Cash, UPI or card when your order arrives. You pay only after you see the medicines.</p></details>
+        <details><summary class="title-3">What if a medicine is out of stock?<svg class="ico"><use href="#i-plus"/></svg></summary><p class="body-6">We call you before packing and offer the same salt from another brand, or arrange it within 24 hours.</p></details>
+        <details><summary class="title-3">Can I return a medicine?<svg class="ico"><use href="#i-plus"/></svg></summary><p class="body-6">Sealed, unexpired items can be returned within 7 days with the bill. Opened strips and fridge items cannot be returned.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="final reveal">
+        <img src="images/cat-medicines.jpg" alt="" loading="lazy" width="700" height="467">
+        <div class="final-in">
+          <span class="caption-3">Open till 10:30 pm tonight</span>
+          <h2>Need a medicine today?</h2>
+          <p class="body-3">Send a photo of the prescription and a pharmacist replies within minutes.</p>
+          <a class="btn btn-lg button-md" href="#upload"><svg class="ico"><use href="#i-camera"/></svg>Upload prescription</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap foot">
+    <a class="brand" href="#top"><span class="brand-mark"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg></span><b class="title-3">MediNest Pharmacy</b></a>
+    <p class="body-6 muted">Shop 7, Main Market Road, near City Hospital<br>Licensed retail pharmacy</p>
+    <div class="foot-links">
+      <button type="button" class="caption-1" data-legal="privacy">Privacy policy</button>
+      <button type="button" class="caption-1" data-legal="terms">Terms of sale</button>
+      <a class="caption-1 muted" href="#top" style="padding:4px 0">Back to top</a>
+    </div>
+    <p class="caption-5 muted">© 2026 MediNest Pharmacy</p>
+    <p class="caption-5 credit">Photos from Unsplash.</p>
+  </div>
+</footer>
+
+<div class="dock" id="dock">
+  <div class="dock-in">
+    <a class="btn btn-primary button-md" id="dockMain" href="#upload"><span class="dock-sum"><svg class="ico"><use href="#i-camera"/></svg><span id="dockLabel">Upload prescription</span></span><svg class="ico"><use href="#i-arrow"/></svg></a>
+    <a class="icon-btn wa wa-link" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg class="ico"><use href="#i-chat"/></svg></a>
+  </div>
+</div>
+
+<dialog class="sheet" id="cart" aria-labelledby="cartTitle">
+  <div class="sheet-in">
+    <div class="sheet-head"><h2 class="heading-6" id="cartTitle">Your cart</h2><button class="icon-btn" type="button" data-close aria-label="Close cart"><svg class="ico"><use href="#i-x"/></svg></button></div>
+    <div class="sheet-body" id="cartBody"></div>
+    <div class="sheet-foot" id="cartFoot"></div>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="legal" aria-labelledby="legalTitle">
+  <div class="sheet-in">
+    <div class="sheet-head"><h2 class="heading-6" id="legalTitle">Privacy policy</h2><button class="icon-btn" type="button" data-close aria-label="Close"><svg class="ico"><use href="#i-x"/></svg></button></div>
+    <div class="sheet-body legal-body body-6" id="legalBody"></div>
+  </div>
+</dialog>
+
+<div class="toast body-5" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(() => {
+  const SHOP = { name: 'MediNest Pharmacy', whatsapp: '919876543210', phone: '+91 98765 43210', open: 9 * 60, close: 22 * 60 + 30, freeAbove: 499, fee: 29 };
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const html = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wa = t => 'https://wa.me/' + SHOP.whatsapp + '?text=' + encodeURIComponent(t);
+  const money = n => '₹' + (Math.round(n * 100) % 100 ? n.toFixed(2) : Math.round(n).toLocaleString('en-IN'));
+  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+  if (!reduce && document.visibilityState === 'visible') { html.classList.add('anim'); setTimeout(() => html.classList.remove('anim'), 2400); }
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  $$('.wa-link').forEach(a => a.href = wa('Hi MediNest, I would like to order medicines.'));
+
+  (function status() {
+    const d = new Date(), m = d.getHours() * 60 + d.getMinutes(), open = m >= SHOP.open && m < SHOP.close;
+    $('#status').classList.toggle('closed', !open);
+    $('#statusText').textContent = open ? 'Open now · delivering till 10:30 pm' : 'Closed now · opens at 9:00 am';
+  })();
+
+  /* catalogue */
+  const CATS = [
+    { id: 'medicines', label: 'Medicines', img: 'cat-medicines' },
+    { id: 'fever', label: 'Fever and cold', img: 'cat-fever' },
+    { id: 'vitamins', label: 'Vitamins', img: 'cat-vitamins' },
+    { id: 'diabetes', label: 'Diabetes care', img: 'cat-diabetes' },
+    { id: 'devices', label: 'Health devices', img: 'cat-devices' },
+    { id: 'baby', label: 'Baby care', img: 'cat-baby' },
+    { id: 'care', label: 'Skin and body', img: 'cat-care' }
+  ];
+  const P = [
+    { id: 'pcm', name: 'Paracetamol 650 mg', size: 'Strip of 15 tablets', price: 30.9, mrp: 34.2, cats: ['medicines', 'fever'], img: 'p-paracetamol' },
+    { id: 'd3', name: 'Vitamin D3 gummies', size: 'Bottle of 60, orange flavour', price: 449, mrp: 549, cats: ['vitamins'], img: 'cat-vitamins' },
+    { id: 'gluc', name: 'Glucometer kit', size: 'Meter, lancets and 25 strips', price: 1149, mrp: 1399, cats: ['diabetes', 'devices'], img: 'cat-diabetes' },
+    { id: 'therm', name: 'Digital thermometer', size: 'Flexible tip, 60 second read', price: 239, mrp: 299, cats: ['devices', 'fever'], img: 'p-thermometer' },
+    { id: 'amox', name: 'Amoxicillin 500 mg', size: 'Strip of 10 capsules', price: 84.6, mrp: 94, cats: ['medicines', 'fever'], img: 'p-capsules', rx: true },
+    { id: 'bp', name: 'Upper arm BP monitor', size: 'Automatic, with large cuff', price: 1789, mrp: 2150, cats: ['devices'], img: 'cat-devices' },
+    { id: 'multi', name: 'Multivitamin for adults', size: 'Bottle of 30 tablets', price: 312.4, mrp: 355, cats: ['vitamins'], img: 'p-multivitamin' },
+    { id: 'omega', name: 'Omega 3 fish oil', size: 'Bottle of 60 softgels', price: 529, mrp: 599, cats: ['vitamins'], img: 'p-omega' },
+    { id: 'diaper', name: 'Baby care starter pack', size: 'Diapers, wash and lotion', price: 1249, mrp: 1460, cats: ['baby'], img: 'cat-baby' },
+    { id: 'cal', name: 'Calcium with vitamin D3', size: 'Bottle of 60 tablets', price: 176.8, mrp: 199, cats: ['vitamins'], img: 'p-calcium' },
+    { id: 'cream', name: 'Moisturising cream', size: 'Tube of 100 g, for dry skin', price: 289, mrp: 325, cats: ['care'], img: 'p-cream' },
+    { id: 'sanit', name: 'Hand sanitizer', size: '500 ml pump bottle', price: 178, mrp: 199, cats: ['care'], img: 'p-sanitizer' }
+  ];
+  const byId = Object.fromEntries(P.map(p => [p.id, p]));
+  const IMG = n => 'images/' + n + '.jpg';
+
+  /* category tiles */
+  $('#cats').innerHTML = CATS.map(c => `<button type="button" class="cat reveal" data-goto="${c.id}"><span class="ph"><img src="${IMG(c.img)}" alt="" loading="lazy" width="700" height="467"></span><span class="cl title-4">${c.label}<svg class="ico"><use href="#i-chev"/></svg></span></button>`).join('')
+    + `<a class="cat rx reveal" href="#upload"><span class="rxi"><svg class="ico"><use href="#i-camera"/></svg></span><span><span class="title-3" style="display:block">Upload prescription</span><span class="caption-5" style="opacity:.85">We pack it for you</span></span></a>`;
+  $('#cats').addEventListener('click', e => { const b = e.target.closest('[data-goto]'); if (!b) return; setCat(b.dataset.goto); $('#shop').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); });
+
+  /* cart state */
+  let cart = store.get('medinest-cart-v2', {});
+  Object.keys(cart).forEach(k => { if (!byId[k] || !(cart[k] > 0)) delete cart[k]; });
+  const count = () => Object.values(cart).reduce((a, b) => a + b, 0);
+  const subtotal = () => Object.entries(cart).reduce((a, [k, q]) => a + byId[k].price * q, 0);
+  function setQty(id, q) {
+    q = Math.max(0, Math.min(9, q));
+    if (q) cart[id] = q; else delete cart[id];
+    store.set('medinest-cart-v2', cart);
+    renderGrid(); renderCartUI(); if (cartDlg.open) renderCart();
+  }
+
+  /* shop grid */
+  let cat = 'all', query = '';
+  const chips = $('#chips'), grid = $('#grid');
+  chips.innerHTML = [{ id: 'all', label: 'All' }, ...CATS].map(c => `<button type="button" class="chip caption-1" data-cat="${c.id}" aria-pressed="${c.id === cat}">${c.label}</button>`).join('');
+  function setCat(c) { cat = c; $$('.chip', chips).forEach(x => x.setAttribute('aria-pressed', x.dataset.cat === c)); const el = $(`.chip[data-cat="${c}"]`, chips); el && el.scrollIntoView({ inline: 'center', block: 'nearest' }); renderGrid(); }
+  chips.addEventListener('click', e => { const b = e.target.closest('[data-cat]'); if (b) setCat(b.dataset.cat); });
+
+  $('#heroSearch').addEventListener('submit', e => {
+    e.preventDefault(); query = $('#hq').value.trim().toLowerCase(); setCat('all');
+    $('#shop').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  });
+  $('#hq').addEventListener('input', e => { query = e.target.value.trim().toLowerCase(); renderGrid(); });
+
+  function control(p) {
+    const q = cart[p.id] || 0;
+    if (!q) return `<button type="button" class="btn btn-soft add button-sm" data-add="${p.id}" aria-label="Add ${p.name} to cart"><svg class="ico" style="width:16px;height:16px"><use href="#i-plus"/></svg>Add</button>`;
+    return `<div class="stepper" role="group" aria-label="Quantity of ${p.name}"><button type="button" data-dec="${p.id}" aria-label="Remove one"><svg class="ico"><use href="#i-minus"/></svg></button><output class="button-sm">${q}</output><button type="button" data-inc="${p.id}" aria-label="Add one"><svg class="ico"><use href="#i-plus"/></svg></button></div>`;
+  }
+  function renderGrid() {
+    const list = P.filter(p => (cat === 'all' || p.cats.includes(cat)) && (!query || (p.name + ' ' + p.size).toLowerCase().includes(query)));
+    if (!list.length) {
+      grid.innerHTML = `<div class="empty"><p class="title-2">No match for “${esc(query)}”</p><p class="body-6 muted">We stock over 3,000 medicines that are not listed here. Send the name or a photo of the prescription and we will arrange it.</p><a class="btn btn-primary button-sm" href="#upload"><svg class="ico"><use href="#i-camera"/></svg>Upload prescription</a></div>`;
+      return;
+    }
+    grid.innerHTML = list.map(p => {
+      const off = Math.round((1 - p.price / p.mrp) * 100);
+      return `<article class="product"><div class="pack"><img src="${IMG(p.img)}" alt="${esc(p.name)}" loading="lazy" width="600" height="600">${p.rx ? '<span class="tag rx caption-3">Rx</span>' : ''}${off >= 5 ? `<span class="tag off caption-4">${off}% off</span>` : ''}</div><div class="p-body"><h3 class="title-4 p-name">${p.name}</h3><p class="caption-5 muted">${p.size}</p><div class="p-foot"><div><div class="price body-5">${money(p.price)}</div><div class="mrp">MRP ${money(p.mrp)}</div></div>${control(p)}</div></div></article>`;
+    }).join('');
+  }
+  grid.addEventListener('click', e => {
+    const a = e.target.closest('[data-add],[data-inc],[data-dec]'); if (!a) return;
+    const id = a.dataset.add || a.dataset.inc || a.dataset.dec;
+    if (a.dataset.add) { setQty(id, 1); toast('Added ' + byId[id].name + ' to cart'); bump(); }
+    else if (a.dataset.inc) { setQty(id, (cart[id] || 0) + 1); bump(); }
+    else setQty(id, (cart[id] || 0) - 1);
+  });
+
+  const badge = $('#badge');
+  function bump() { badge.classList.remove('bump'); void badge.offsetWidth; badge.classList.add('bump'); }
+  function renderCartUI() {
+    const n = count();
+    badge.textContent = n; badge.classList.toggle('on', n > 0);
+    $('#cartBtn').setAttribute('aria-label', 'Open cart, ' + n + (n === 1 ? ' item' : ' items'));
+    const main = $('#dockMain');
+    if (n) { $('#dockLabel').textContent = `Cart · ${n} ${n === 1 ? 'item' : 'items'} · ${money(subtotal())}`; main.querySelector('use').setAttribute('href', '#i-bag'); main.setAttribute('href', '#cart'); }
+    else { $('#dockLabel').textContent = 'Upload prescription'; main.querySelector('use').setAttribute('href', '#i-camera'); main.setAttribute('href', '#upload'); }
+  }
+  $('#dockMain').addEventListener('click', e => { if (count()) { e.preventDefault(); openCart(); } });
+
+  const cartDlg = $('#cart');
+  function openCart() { renderCart(); if (!cartDlg.open) cartDlg.showModal(); }
+  $('#cartBtn').addEventListener('click', openCart);
+  $$('dialog [data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+  $$('dialog').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+
+  let checkout = { name: '', phone: '', address: '', pay: 'Cash on delivery' };
+  function renderCart() {
+    const body = $('#cartBody'), foot = $('#cartFoot'), n = count();
+    if (!n) {
+      body.innerHTML = `<div class="empty" style="padding:24px 0"><p class="title-2">Your cart is empty</p><p class="body-6 muted">Add products from the shop, or send a prescription and we will pack it for you.</p><button type="button" class="btn btn-primary button-sm" id="goShop">Browse products</button></div>`;
+      foot.innerHTML = '';
+      $('#goShop').onclick = () => { cartDlg.close(); $('#shop').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); };
+      return;
+    }
+    const sub = subtotal(), fee = sub >= SHOP.freeAbove ? 0 : SHOP.fee, rx = Object.keys(cart).some(k => byId[k].rx);
+    body.innerHTML = Object.entries(cart).map(([k, q]) => { const p = byId[k]; return `<div class="line-item"><span class="thumb"><img src="${IMG(p.img)}" alt=""></span><div class="t"><p class="title-4">${p.name}</p><p class="caption-5 muted">${p.size}</p><p class="price caption-4">${money(p.price * q)}</p></div><div class="stepper" role="group" aria-label="Quantity of ${p.name}"><button type="button" data-dec="${k}" aria-label="Remove one"><svg class="ico"><use href="#i-minus"/></svg></button><output class="button-sm">${q}</output><button type="button" data-inc="${k}" aria-label="Add one"><svg class="ico"><use href="#i-plus"/></svg></button></div></div>`; }).join('')
+      + (rx ? `<div class="note body-6"><svg class="ico"><use href="#i-file"/></svg><span>Items marked Rx need a prescription. Attach a photo of it in the WhatsApp chat when you send this order.</span></div>` : '')
+      + `<div><div class="sum-row body-6"><span class="muted">Items</span><span class="mono">${money(sub)}</span></div><div class="sum-row body-6"><span class="muted">Delivery</span><span class="mono">${fee ? money(fee) : 'Free'}</span></div>${fee ? `<p class="caption-5 muted">Add ${money(SHOP.freeAbove - sub)} more for free delivery</p>` : ''}<div class="sum-row total title-3"><span>Total</span><span class="mono">${money(sub + fee)}</span></div></div>
+      <form class="form" id="coForm" novalidate>
+        <div class="field"><label class="title-4" for="coName">Name</label><input class="input" id="coName" autocomplete="name" value="${esc(checkout.name)}"><p class="err caption-4" id="coNameErr"></p></div>
+        <div class="field"><label class="title-4" for="coPhone">Mobile number</label><input class="input mono" id="coPhone" inputmode="numeric" autocomplete="tel-national" maxlength="11" value="${esc(checkout.phone)}"><p class="err caption-4" id="coPhoneErr"></p></div>
+        <div class="field"><label class="title-4" for="coAddr">Delivery address</label><textarea class="input" id="coAddr" rows="2" autocomplete="street-address" placeholder="House number, street, landmark">${esc(checkout.address)}</textarea><p class="err caption-4" id="coAddrErr"></p></div>
+        <fieldset class="field" style="border:0;padding:0;margin:0"><legend class="title-4" style="margin-bottom:8px">Payment on delivery</legend><div class="radios">${['Cash on delivery', 'UPI on delivery', 'Card on delivery'].map((o, i) => `<label class="radio"><input type="radio" name="pay" id="pay${i}" value="${o}" ${checkout.pay === o ? 'checked' : ''}><span class="caption-1">${o.replace(' on delivery', '')}</span></label>`).join('')}</div></fieldset>
+      </form>`;
+    foot.innerHTML = `<button type="submit" form="coForm" class="btn btn-primary btn-lg button-md" id="coBtn"><svg class="ico"><use href="#i-check"/></svg>Place order · ${money(sub + fee)}</button><div class="ready" id="coReady" hidden><p class="body-5">Your order is ready. WhatsApp opens with it filled in. Press send and the pharmacist confirms within minutes.</p><a class="btn btn-primary button-md" id="coWa" href="#" target="_blank" rel="noopener"><svg class="ico"><use href="#i-chat"/></svg>Send order on WhatsApp</a></div>`;
+    body.onclick = e => { const a = e.target.closest('[data-inc],[data-dec]'); if (!a) return; saveCo(); const id = a.dataset.inc || a.dataset.dec; setQty(id, (cart[id] || 0) + (a.dataset.inc ? 1 : -1)); };
+    $('#coForm').addEventListener('input', saveCo);
+    $('#coForm').addEventListener('submit', e => {
+      e.preventDefault(); saveCo();
+      const ok = [check('coName', checkout.name.length >= 2, 'Enter your name.'), check('coPhone', /^[6-9]\d{9}$/.test(checkout.phone.replace(/\D/g, '')), 'Enter a 10 digit mobile number.'), check('coAddr', checkout.address.length >= 8, 'Enter the full address with a landmark.')].every(Boolean);
+      if (!ok) { const bad = $('[aria-invalid="true"]', body); bad && bad.focus(); return; }
+      const lines = Object.entries(cart).map(([k, q]) => `• ${byId[k].name} (${byId[k].size}) x ${q} = ${money(byId[k].price * q)}`);
+      const msg = `New order for ${SHOP.name}\n\n${lines.join('\n')}\n\nItems: ${money(sub)}\nDelivery: ${fee ? money(fee) : 'Free'}\nTotal: ${money(sub + fee)}\n\nName: ${checkout.name}\nMobile: ${checkout.phone}\nAddress: ${checkout.address}\nPayment: ${checkout.pay}`;
+      $('#coWa').href = wa(msg); $('#coReady').hidden = false; $('#coBtn').hidden = true; $('#coWa').focus();
+    });
+  }
+  function saveCo() { const f = $('#coForm'); if (!f) return; checkout = { name: $('#coName').value.trim(), phone: $('#coPhone').value.trim(), address: $('#coAddr').value.trim(), pay: (f.querySelector('input[name=pay]:checked') || {}).value || checkout.pay }; }
+  function check(id, ok, msg) { const el = $('#' + id); el.setAttribute('aria-invalid', ok ? 'false' : 'true'); $('#' + id + 'Err').textContent = ok ? '' : msg; return ok; }
+
+  /* prescription upload */
+  let rxFile = null;
+  const drop = $('#drop'), fileIn = $('#rxFile');
+  ['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(t => drop.addEventListener(t, () => drop.classList.remove('over')));
+  drop.addEventListener('drop', e => { e.preventDefault(); if (e.dataTransfer.files[0]) takeFile(e.dataTransfer.files[0]); });
+  fileIn.addEventListener('change', () => fileIn.files[0] && takeFile(fileIn.files[0]));
+  function takeFile(f) {
+    const err = $('#fileErr'), wrap = $('#previewWrap');
+    if (!/^image\/|application\/pdf/.test(f.type)) { err.textContent = 'This file type is not supported. Choose a JPG, PNG or PDF.'; return; }
+    if (f.size > 10 * 1024 * 1024) { err.textContent = 'Upload failed. The file is over 10 MB. Try a smaller photo.'; return; }
+    err.textContent = ''; rxFile = f;
+    const kb = f.size > 1048576 ? (f.size / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(f.size / 1024)) + ' KB';
+    const thumb = f.type.startsWith('image/') ? `<img alt="Prescription preview" src="${URL.createObjectURL(f)}">` : `<span class="file-ico"><svg class="ico"><use href="#i-file"/></svg></span>`;
+    wrap.innerHTML = `<div class="preview">${thumb}<div><p class="title-4">${esc(f.name)}</p><p class="caption-5 muted">${kb} · ready to send</p></div><button type="button" class="icon-btn" id="rmFile" aria-label="Remove file" style="margin-left:auto"><svg class="ico"><use href="#i-x"/></svg></button></div>`;
+    wrap.hidden = false;
+    $('#rmFile').onclick = () => { rxFile = null; wrap.hidden = true; wrap.innerHTML = ''; fileIn.value = ''; };
+  }
+  $('#rxForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = $('#rxName').value.trim(), phone = $('#rxPhone').value.replace(/\D/g, '');
+    const ok = [check('rxName', name.length >= 2, 'Enter your name.'), check('rxPhone', /^[6-9]\d{9}$/.test(phone), 'Enter a 10 digit mobile number.')].every(Boolean);
+    if (!rxFile) $('#fileErr').textContent = 'Add a photo of the prescription first.';
+    if (!ok || !rxFile) return;
+    $('#rxWa').href = wa(`Hi ${SHOP.name}, I would like to order the medicines on my prescription.\n\nName: ${name}\nMobile: ${phone}\n\nI am attaching the prescription photo here.`);
+    $('#rxReady').hidden = false; $('#rxWa').focus();
+  });
+
+  $('#copyPhone').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(SHOP.phone); toast('Number copied'); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents($('#phoneText')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Number selected. Copy it from the menu.'); }
+  });
+
+  const LEGAL = {
+    privacy: ['Privacy policy', '<p>We collect your name, mobile number, address and prescription only to fill and deliver your order.</p><p>Prescriptions are seen only by our pharmacist and are never shared with anyone else. You can ask us to delete your details at any time on WhatsApp.</p>'],
+    terms: ['Terms of sale', '<p>Prescription medicines are dispensed only against a valid prescription from a registered medical practitioner.</p><p>Prices include taxes. Sealed, unexpired items can be returned within 7 days with the bill. Opened strips and refrigerated items cannot be returned.</p>']
+  };
+  $$('[data-legal]').forEach(b => b.addEventListener('click', () => { const [t, h] = LEGAL[b.dataset.legal]; $('#legalTitle').textContent = t; $('#legalBody').innerHTML = h; $('#legal').showModal(); }));
+
+  let tt; function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('on'), 2200); }
+
+  const menuBtn = $('#menuBtn');
+  function setMenu(open) { html.classList.toggle('menu-open', open); menuBtn.setAttribute('aria-expanded', open); menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); }
+  menuBtn.addEventListener('click', () => setMenu(!html.classList.contains('menu-open')));
+  $$('#menu a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+
+  const navMap = new Map($$('[data-nav]').map(a => [a.getAttribute('href').slice(1), a]));
+  const secIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) navMap.forEach((a, id) => a.setAttribute('aria-current', id === en.target.id)); }), { rootMargin: '-45% 0px -50% 0px' });
+  navMap.forEach((a, id) => { const s = document.getElementById(id); if (s) secIO.observe(s); });
+
+  const dock = $('#dock');
+  new IntersectionObserver(([en]) => dock.classList.toggle('show', !en.isIntersecting && en.boundingClientRect.top < 0), { threshold: 0 }).observe($('.quick'));
+
+  renderGrid(); renderCartUI();
+
+  /* reveals */
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.remove('pre'); io.unobserve(en.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    $$('.reveal').forEach((el, i) => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add('pre'); el.style.transitionDelay = (el.classList.contains('cat') ? (i % 2) * 80 : 0) + 'ms'; io.observe(el); } });
+  }
+
+  /* tagline words */
+  const tag = $('#tagline'), HL = ['pharmacist.', 'sealed'];
+  tag.innerHTML = tag.textContent.split(' ').map(w => `<span class="w${HL.includes(w) ? ' hl' : ''}">${w}</span>`).join(' ');
+  if (!reduce && 'IntersectionObserver' in window) {
+    tag.classList.add('words-armed');
+    const wio = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('on'); wio.unobserve(en.target); } }), { rootMargin: '0px 0px -40% 0px' });
+    $$('.w', tag).forEach(w => wio.observe(w));
+  }
+
+  /* hero slideshow: slow zoom photos, story bars, swipe and tap */
+  const slides = $$('.slide'), sbars = $$('.hero-bars button'), cap = $('#slideCap'), capText = $('#capText');
+  const CAPS = [['shield', 'Licensed pharmacist on duty'], ['chat', 'Free advice with every order'], ['truck', 'Out for delivery · 38 min']];
+  let si = 0, st;
+  function show(i) {
+    si = (i + slides.length) % slides.length;
+    slides.forEach((s, k) => s.classList.toggle('on', k === si));
+    sbars.forEach((b, k) => { b.classList.toggle('done', k < si); b.classList.remove('on'); b.setAttribute('aria-current', k === si); });
+    void sbars[si].offsetWidth;
+    sbars[si].classList.add(reduce ? 'done' : 'on');
+    cap.classList.add('swap');
+    setTimeout(() => { capText.textContent = CAPS[si][1]; cap.querySelector('use').setAttribute('href', '#i-' + CAPS[si][0]); cap.classList.remove('swap'); }, 250);
+  }
+  function play() { clearTimeout(st); if (reduce || document.hidden) return; st = setTimeout(() => { show(si + 1); play(); }, 5200); }
+  sbars.forEach((b, k) => b.addEventListener('click', () => { show(k); play(); }));
+  let sx = null;
+  const hc = $('#heroCard');
+  hc.addEventListener('pointerdown', e => { if (!e.target.closest('form,a,button')) sx = e.clientX; });
+  hc.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 40) { show(si + (dx < 0 ? 1 : -1)); play(); } });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) clearTimeout(st); else play(); });
+  show(0); play();
+
+  /* moving category strip */
+  const stripItems = CATS.map(c => `<button type="button" data-goto="${c.id}"><img src="${IMG(c.img)}" alt="" width="40" height="40" loading="lazy"><span class="caption-1">${c.label}</span></button>`).join('');
+  $('#strip').innerHTML = stripItems + stripItems.replace(/<button /g, '<button tabindex="-1" aria-hidden="true" ');
+  $('#strip').addEventListener('click', e => { const b = e.target.closest('[data-goto]'); if (!b) return; setCat(b.dataset.goto); $('#shop').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); });
+
+  /* Apple style: photos settle from a slight zoom as they scroll into place */
+  if (window.gsap && window.ScrollTrigger && !reduce) {
+    gsap.registerPlugin(ScrollTrigger);
+    $$('[data-zoom]').forEach(fig => {
+      const img = fig.querySelector('img');
+      gsap.fromTo(img, { '--z': 1.14 }, { '--z': 1, ease: 'none', scrollTrigger: { trigger: fig, start: 'top bottom', end: 'center 45%', scrub: 0.6 } });
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
